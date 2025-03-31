@@ -1,0 +1,35 @@
+.container {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  margin-bottom: 20px;
+}
+
+.score {
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+
+main img {
+  max-width: 100%;
+  transition: opacity 0.5s;
+}
+
+main img.fade {
+  opacity: 0.5;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+.buttons button {
+  font-size: 1em;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+}
