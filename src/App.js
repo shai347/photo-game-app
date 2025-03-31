@@ -20,8 +20,8 @@ function App() {
   const handleAnswer = () => {
     if (animating) return; // Prevent multiple clicks during animation
 
-    // Determine randomly if the answer is correct
-    const isCorrect = Math.random() >= 0.5;
+    // Increase chance for a correct answer (70% correct)
+    const isCorrect = Math.random() >= 0.3;
     let pointsEarned = 0;
     if (isCorrect) {
       pointsEarned = 20;
@@ -34,7 +34,7 @@ function App() {
     
     setAnimating(true);
 
-    // Increase animation duration to 2.5 seconds for better readability
+    // Extend feedback duration to 2.5 seconds for readability
     setTimeout(() => {
       if (isCorrect) {
         setScore(prev => prev + pointsEarned);
@@ -51,7 +51,10 @@ function App() {
   return (
     <div className="container">
       <header>
-        <h1>Photo Game</h1>
+        <div className="header-text">
+          <h1>Mistake or Not</h1>
+          <h2 className="tagline">You be the judge – was it made by mistake or on purpose?</h2>
+        </div>
         <div className="score">
           Score: {score} <span className="stars">⭐</span>
         </div>
@@ -65,10 +68,10 @@ function App() {
         {floatingPoints && <div className="floating-points">{floatingPoints}</div>}
         <div className="buttons">
           <button onClick={handleAnswer} disabled={animating}>
-            <span className="button-icon">❌</span> Mistake
+            Mistake <span className="button-icon">😇</span>
           </button>
           <button onClick={handleAnswer} disabled={animating}>
-            <span className="button-icon">✅</span> Not a Mistake
+            Not a Mistake <span className="button-icon">😈</span>
           </button>
         </div>
       </main>
