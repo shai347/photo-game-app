@@ -17,6 +17,20 @@ function App() {
       });
   }, []);
 
+  // Trigger page view events when the current image changes
+  useEffect(() => {
+    // Google Analytics: record a virtual page view
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'page_view', {
+        page_path: `/photo/${currentIndex}`,
+      });
+    }
+    // Plausible Analytics: record a virtual page view
+    if (typeof window.plausible === 'function') {
+      window.plausible('pageview');
+    }
+  }, [currentIndex]);
+
   const handleAnswer = () => {
     if (animating) return; // Prevent multiple clicks during animation
 
