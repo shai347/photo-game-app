@@ -1,5 +1,0 @@
-name = "photo-game-app"
-compatibility_date = "2023-01-01"
-
-[observability.logs]
-enabled = true
