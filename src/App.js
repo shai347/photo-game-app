@@ -17,8 +17,7 @@ function App() {
       .then(res => res.json())
       .then(data => {
         setImages(data);
-        // Determine a starting index for first-time visitors.
-        // If no index is stored, pick a random index and store it.
+        // For new visitors, pick a random starting index.
         const storedIndex = localStorage.getItem('startingIndex');
         let startingIndex;
         if (storedIndex !== null) {
@@ -32,7 +31,7 @@ function App() {
       .catch(err => console.error('Error loading image manifest:', err));
   }, []);
 
-  // Track a "view" event each time the current image changes.
+  // Each time the current image changes, track a "view" event.
   useEffect(() => {
     if (images.length > 0) {
       fetch(TRACKING_URL, {
@@ -43,7 +42,7 @@ function App() {
     }
   }, [currentIndex, images]);
 
-  // Helper function to track events (both view and engagement).
+  // Helper function to track events (view and engagement).
   function trackEvent(photoId, eventType) {
     if (!photoId) return;
     fetch(TRACKING_URL, {
@@ -53,14 +52,14 @@ function App() {
     }).catch(err => console.error('Error tracking event:', err));
   }
 
-  // Handle answer button click: track engagement, show feedback, update score, and move to the next image.
+  // Handle answer click: track engagement, show feedback, update score, and move to next image.
   const handleAnswer = () => {
     if (animating || images.length === 0) return;
 
-    // Track an "engagement" event for the current image.
+    // Record engagement event.
     trackEvent(images[currentIndex], 'engagement');
 
-    // Determine if the user "succeeds" (70% chance to be correct).
+    // Determine if answer is correct (70% chance).
     const isCorrect = Math.random() >= 0.3;
     let pointsEarned = 0;
     if (isCorrect) {
@@ -71,22 +70,44 @@ function App() {
       setFeedback("Oops! No points this time!");
       setFloatingPoints(null);
     }
-    
+
     setAnimating(true);
 
-    // After 2 seconds, update the score (if correct) and move to the next image.
+    // Preload the next image.
+    const nextIndex = (currentIndex + 1) % images.length;
+    const nextImageUrl = `/images/${images[nextIndex]}`;
+    let imagePreloaded = false;
+    const preloadImage = new Image();
+    preloadImage.src = nextImageUrl;
+    preloadImage.onload = () => {
+      imagePreloaded = true;
+    };
+
+    // Use a shorter delay (e.g. 1 second) for the animation.
     setTimeout(() => {
-      if (isCorrect) {
-        setScore(prev => prev + pointsEarned);
+      // If the image is preloaded, update immediately.
+      // Otherwise, wait for it to load.
+      if (imagePreloaded) {
+        updateForNextImage(isCorrect, pointsEarned);
+      } else {
+        preloadImage.onload = () => {
+          updateForNextImage(isCorrect, pointsEarned);
+        };
       }
-      setFeedback('');
-      setFloatingPoints(null);
-      setAnimating(false);
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 2000);
+    }, 1000);
   };
 
-  // If the images haven't loaded yet, show a loading message.
+  // Update state for next image.
+  const updateForNextImage = (isCorrect, pointsEarned) => {
+    if (isCorrect) {
+      setScore(prev => prev + pointsEarned);
+    }
+    setFeedback('');
+    setFloatingPoints(null);
+    setAnimating(false);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
   if (images.length === 0) return <div>Loading images...</div>;
 
   return (
@@ -103,18 +124,4 @@ function App() {
       <main className="image-container">
         <img src={`/images/${images[currentIndex]}`} alt="game" />
         {feedback && <div className="feedback">{feedback}</div>}
-        {floatingPoints && <div className="floating-points">{floatingPoints}</div>}
-        <div className="buttons">
-          <button onClick={handleAnswer} disabled={animating}>
-            Mistake <span className="button-icon">😇</span>
-          </button>
-          <button onClick={handleAnswer} disabled={animating}>
-            Not a Mistake <span className="button-icon">😈</span>
-          </button>
-        </div>
-      </main>
-    </div>
-  );
-}
-
-export default App;
+        {floating
