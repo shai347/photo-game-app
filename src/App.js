@@ -20,11 +20,11 @@ function App() {
   const handleAnswer = () => {
     if (animating) return; // Prevent multiple clicks during animation
 
-    // Randomly decide if the answer is correct
+    // Determine randomly if the answer is correct
     const isCorrect = Math.random() >= 0.5;
     let pointsEarned = 0;
     if (isCorrect) {
-      pointsEarned = 20; // Earn 20 points when correct
+      pointsEarned = 20;
       setFeedback("Awesome! You earned 20 points!");
       setFloatingPoints("+20");
     } else {
@@ -34,7 +34,7 @@ function App() {
     
     setAnimating(true);
 
-    // Animation and feedback duration: 1.5 seconds before moving to next image
+    // Increase animation duration to 2.5 seconds for better readability
     setTimeout(() => {
       if (isCorrect) {
         setScore(prev => prev + pointsEarned);
@@ -43,7 +43,7 @@ function App() {
       setFloatingPoints(null);
       setAnimating(false);
       setCurrentIndex((currentIndex + 1) % images.length);
-    }, 1500);
+    }, 2500);
   };
 
   if (images.length === 0) return <div>Loading images...</div>;
@@ -53,7 +53,7 @@ function App() {
       <header>
         <h1>Photo Game</h1>
         <div className="score">
-          Score: {score}
+          Score: {score} <span className="stars">⭐</span>
         </div>
       </header>
       <main className="image-container">
@@ -64,8 +64,12 @@ function App() {
         {feedback && <div className="feedback">{feedback}</div>}
         {floatingPoints && <div className="floating-points">{floatingPoints}</div>}
         <div className="buttons">
-          <button onClick={handleAnswer} disabled={animating}>Mistake</button>
-          <button onClick={handleAnswer} disabled={animating}>Not a Mistake</button>
+          <button onClick={handleAnswer} disabled={animating}>
+            <span className="button-icon">❌</span> Mistake
+          </button>
+          <button onClick={handleAnswer} disabled={animating}>
+            <span className="button-icon">✅</span> Not a Mistake
+          </button>
         </div>
       </main>
     </div>
