@@ -7,11 +7,26 @@
 
 header {
   margin-bottom: 20px;
+  position: relative;
 }
 
 .score {
   font-size: 1.2em;
   margin-top: 10px;
+}
+
+/* Score pop animation */
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+.score-pop {
+  animation: pop 0.5s ease;
+}
+
+main.image-container {
+  position: relative;
 }
 
 main img {
@@ -21,6 +36,21 @@ main img {
 
 main img.fade {
   opacity: 0.5;
+}
+
+.feedback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2em;
+  color: #ff6600;
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .buttons {
