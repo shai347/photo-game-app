@@ -5,12 +5,11 @@ function App() {
   const [images, setImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [animationClass, setAnimationClass] = useState('');
   const [feedback, setFeedback] = useState('');
-  const [scoreAnimation, setScoreAnimation] = useState(false);
+  const [floatingPoints, setFloatingPoints] = useState(null);
+  const [animating, setAnimating] = useState(false);
 
   useEffect(() => {
-    // Fetch the image manifest generated at build time
     fetch('/image-manifest.json')
       .then(res => res.json())
       .then(data => {
@@ -19,23 +18,32 @@ function App() {
   }, []);
 
   const handleAnswer = () => {
+    if (animating) return; // Prevent multiple clicks during animation
+
     // Randomly decide if the answer is correct
     const isCorrect = Math.random() >= 0.5;
+    let pointsEarned = 0;
     if (isCorrect) {
-      setScore(score + 1);
-      setFeedback("Correct!");
+      pointsEarned = 20; // Earn 20 points when correct
+      setFeedback("Awesome! You earned 20 points!");
+      setFloatingPoints("+20");
     } else {
-      setFeedback("Wrong!");
+      setFeedback("Oops! No points this time!");
+      setFloatingPoints(null);
     }
-    setScoreAnimation(true);
-    setAnimationClass('fade');
-    // After a short delay, clear feedback and move to the next image
+    
+    setAnimating(true);
+
+    // Animation and feedback duration: 1.5 seconds before moving to next image
     setTimeout(() => {
+      if (isCorrect) {
+        setScore(prev => prev + pointsEarned);
+      }
       setFeedback('');
-      setScoreAnimation(false);
-      setAnimationClass('');
+      setFloatingPoints(null);
+      setAnimating(false);
       setCurrentIndex((currentIndex + 1) % images.length);
-    }, 1000);
+    }, 1500);
   };
 
   if (images.length === 0) return <div>Loading images...</div>;
@@ -44,18 +52,20 @@ function App() {
     <div className="container">
       <header>
         <h1>Photo Game</h1>
-        <div className={`score ${scoreAnimation ? 'score-pop' : ''}`}>Score: {score}</div>
+        <div className="score">
+          Score: {score}
+        </div>
       </header>
       <main className="image-container">
         <img
           src={`/images/${images[currentIndex]}`}
           alt="game"
-          className={animationClass}
         />
         {feedback && <div className="feedback">{feedback}</div>}
+        {floatingPoints && <div className="floating-points">{floatingPoints}</div>}
         <div className="buttons">
-          <button onClick={handleAnswer}>Mistake</button>
-          <button onClick={handleAnswer}>Not a Mistake</button>
+          <button onClick={handleAnswer} disabled={animating}>Mistake</button>
+          <button onClick={handleAnswer} disabled={animating}>Not a Mistake</button>
         </div>
       </main>
     </div>
