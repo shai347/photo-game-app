@@ -14,23 +14,34 @@ body {
   padding: 20px;
 }
 
-/* Header styling with improved score display */
+/* Header styling with dark background for contrast */
 header {
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #222;
+  padding: 15px;
+  border-radius: 8px;
 }
 
-h1 {
+.header-text h1 {
   margin: 0;
   font-size: 2rem;
-  color: #009688;
+  color: #fff;
 }
 
+.tagline {
+  margin: 5px 0 0;
+  font-size: 1rem;
+  color: #ccc;
+  font-weight: normal;
+}
+
+/* Score styling with white text and gold star */
 .score {
   font-size: 1.8rem;
-  color: #ffeb3b; /* Matches the floating points accent */
+  color: #fff;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -38,6 +49,7 @@ h1 {
 
 .stars {
   margin-left: 10px;
+  color: #FFD700; /* Gold color */
   animation: starPop 1s ease;
 }
 
@@ -91,7 +103,7 @@ main img {
   transform: translate(-50%, -50%);
   font-size: 2.5rem;
   font-weight: bold;
-  color: #ffeb3b;
+  color: #FFC107; /* Bright amber for floating points */
   animation: floatUp 2.5s forwards;
 }
 
@@ -136,7 +148,7 @@ main img {
 }
 
 .button-icon {
-  margin-right: 8px;
+  margin-left: 8px;
   transition: transform 0.2s;
 }
 
