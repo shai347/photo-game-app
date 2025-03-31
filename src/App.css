@@ -1,10 +1,10 @@
-/* Apply a global background and font */
+/* Global Styles */
 body {
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4; /* Light gray background */
-  font-family: 'Helvetica Neue', Arial, sans-serif; /* Modern sans-serif font */
-  color: #333; /* Dark text color */
+  background-color: #f4f4f4;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
 }
 
 .container {
@@ -14,33 +14,27 @@ body {
   padding: 20px;
 }
 
+/* Header styling with improved score display */
 header {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 h1 {
   margin: 0;
   font-size: 2rem;
-  color: #009688; /* Teal accent for the title */
+  color: #009688;
 }
 
 .score {
-  font-size: 1.2rem;
-  margin-top: 10px;
-  color: #555;
+  font-size: 1.5rem;
+  color: #ff5722; /* Eye-catching accent color */
+  font-weight: bold;
 }
 
-/* Score pop animation */
-@keyframes pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.5); }
-  100% { transform: scale(1); }
-}
-.score-pop {
-  animation: pop 0.5s ease;
-}
-
-/* Center the image and add some subtle styling */
+/* Image container styling */
 main.image-container {
   position: relative;
   background-color: #fff;
@@ -52,32 +46,54 @@ main.image-container {
 main img {
   max-width: 100%;
   border-radius: 4px;
-  transition: opacity 0.5s;
   margin-bottom: 20px;
 }
 
-main img.fade {
-  opacity: 0.4;
-}
-
-/* Feedback message overlay */
+/* Enhanced feedback message */
 .feedback {
   position: absolute;
-  top: 45%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 2em;
-  color: #ff6600;
-  animation: fadeIn 0.5s forwards;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  background: rgba(0,0,0,0.7);
+  padding: 10px 20px;
+  border-radius: 10px;
+  animation: feedbackFade 1.5s ease;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes feedbackFade {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
 }
 
-/* Buttons container */
+/* Floating points animation */
+.floating-points {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ffeb3b;
+  animation: floatUp 1.5s forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -150%) scale(1.5);
+  }
+}
+
+/* Buttons styling */
 .buttons {
   display: flex;
   justify-content: center;
@@ -85,23 +101,21 @@ main img.fade {
   margin-top: 10px;
 }
 
-/* Button styling */
 .buttons button {
   font-size: 1rem;
   padding: 12px 24px;
   cursor: pointer;
   border: none;
   border-radius: 24px;
-  background-color: #009688; /* Teal background */
-  color: #fff; /* White text */
+  background-color: #009688;
+  color: #fff;
   transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Hover and active states */
 .buttons button:hover {
-  background-color: #00796B; /* Darker teal on hover */
+  background-color: #00796B;
 }
 
 .buttons button:active {
-  transform: scale(0.98); /* Subtle click effect */
+  transform: scale(0.98);
 }
