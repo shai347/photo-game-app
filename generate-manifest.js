@@ -1,8 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
+// Update this to point to the public folder
 const imagesDir = path.join(__dirname, 'public', 'images');
-const manifestPath = path.join(__dirname, 'image-manifest.json');
+const manifestPath = path.join(__dirname, 'public', 'image-manifest.json');
 
 fs.readdir(imagesDir, (err, files) => {
   if (err) {
