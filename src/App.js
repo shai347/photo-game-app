@@ -17,20 +17,6 @@ function App() {
       });
   }, []);
 
-  // Trigger page view events when the current image changes
-  useEffect(() => {
-    // Google Analytics: record a virtual page view
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'page_view', {
-        page_path: `/photo/${currentIndex}`,
-      });
-    }
-    // Plausible Analytics: record a virtual page view
-    if (typeof window.plausible === 'function') {
-      window.plausible('pageview');
-    }
-  }, [currentIndex]);
-
   const handleAnswer = () => {
     if (animating) return; // Prevent multiple clicks during animation
 
@@ -48,7 +34,7 @@ function App() {
     
     setAnimating(true);
 
-    // Extend feedback duration to 2.5 seconds for readability
+    // Reduced animation/timeout to 2 seconds total
     setTimeout(() => {
       if (isCorrect) {
         setScore(prev => prev + pointsEarned);
@@ -57,7 +43,7 @@ function App() {
       setFloatingPoints(null);
       setAnimating(false);
       setCurrentIndex((currentIndex + 1) % images.length);
-    }, 2500);
+    }, 2000);
   };
 
   if (images.length === 0) return <div>Loading images...</div>;
@@ -70,7 +56,7 @@ function App() {
           <h2 className="tagline">You be the judge – was it made by mistake or on purpose?</h2>
         </div>
         <div className="score">
-          Score: {score} <span className="stars">⭐</span>
+          Score: <span className="score-value">{score}</span> <span className="stars">⭐</span>
         </div>
       </header>
       <main className="image-container">
